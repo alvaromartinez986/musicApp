@@ -1,7 +1,8 @@
 'use strict'
 
-let bcrypt = require('bcrypt-nodejs')
+let bcrypt = require('bcrypt-nodejs');
 let User = require('../models/user');
+let jwt = require('../services/jwt');
 
 function pruebas(req, res) {
     res.status(200).send({
@@ -82,7 +83,9 @@ function loginUser(req, res) {
                 bcrypt.compare(password, user.password, (err, check) => {
                     if (check) {
                         if (params.gethash) {
-
+                            res.status(200).send({
+                                token: jwt.createToken(user)
+                            });
                         } else {
                             res.status(200).send({
                                 user
